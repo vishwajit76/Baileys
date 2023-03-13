@@ -479,7 +479,7 @@ export const generateWAMessageContent = async(
 	}
 
 	if('viewOnce' in message && !!message.viewOnce) {
-		m = { viewOnceMessage: { message: m } }
+		m = { viewOnceMessageV2: { message: m } }
 	}
 
 	if('mentions' in message && message.mentions?.length) {
