@@ -457,12 +457,29 @@ export const generateWAMessageContent = async(
 			msg.hydratedFooterText = message.footer
 		}
 
+		// m = {
+		// 	templateMessage: {
+		// 		fourRowTemplate: msg,
+		// 		hydratedTemplate: msg
+		// 	}
+		// }
+
+		//Templte Patch
 		m = {
-			templateMessage: {
-				fourRowTemplate: msg,
-				hydratedTemplate: msg
+			documentWithCaptionMessage: {
+				message: {
+					templateMessage: {
+						contextInfo: {
+							disappearingMode: {
+								initiator: proto.DisappearingMode.Initiator.CHANGED_IN_CHAT
+							}
+						},
+						hydratedTemplate: msg,
+					} as proto.Message.ITemplateMessage
+				}
 			}
-		}
+		} as proto.IMessage
+
 	}
 
 	if('sections' in message && !!message.sections) {
