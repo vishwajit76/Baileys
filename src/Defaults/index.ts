@@ -121,12 +121,12 @@ export const PHONENUMBER_MCC = phoneNumberMCC
 export const MOBILE_ENDPOINT = 'g.whatsapp.net'
 export const MOBILE_PORT = 443
 
-const WA_VERSION = '2.25.10.50'
-const WA_VERSION_HASH = createHash('md5').update(WA_VERSION).digest('hex')
-export const MOBILE_TOKEN = Buffer.from('0a1mLfGUIBVrMKF1RdvLI5lkRBvof6vn0fD2QRSM' + WA_VERSION_HASH)
+const WA_VERSION = '2.25.10.72'
+const WA_VERSION_HASH = createHash('sha256').update(WA_VERSION).digest('hex')
+export const MOBILE_TOKEN = Buffer.from('USUDuDYDeQhY4RF2fCSp5m3F6kJ1M2J8wS7bbNA2' + WA_VERSION_HASH)
 export const MOBILE_REGISTRATION_ENDPOINT = 'https://v.whatsapp.net/v2'
 export const FALLBACK_REGISTRATION_ENDPOINT = 'https://v-eu.whatsapp.net/v2'
-export const MOBILE_USERAGENT = `WhatsApp/${WA_VERSION} iOS/18.0 Device/Apple-iPhone_14 (Language/en-US; Build/12345)`
+export const MOBILE_USERAGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Mobile/15E148 Safari/604.1"
 export const DEVICE_INFO = {
 	os: 'iOS',
 	osVersion: '18.0',
@@ -135,7 +135,7 @@ export const DEVICE_INFO = {
 	language: 'en-US',
 	buildNumber: '12345',
 }
-export const REGISTRATION_PUBLIC_KEY = Buffer.from([
-	5, 142, 140, 15, 116, 195, 235, 197, 215, 166, 134, 92, 108, 60, 132, 56, 86, 176, 97, 33, 204, 232, 234, 119, 77,
-	22, 251, 111, 18, 37, 18, 48, 22,
-])
+export const REGISTRATION_PUBLIC_KEY = Buffer.from(
+	'8e8c0f74c3ebc5d7a6865c6c3c843856b06121cce8ea774d22fb6f122512302d',
+	'hex'
+)
