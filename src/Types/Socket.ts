@@ -1,4 +1,3 @@
-
 import { AxiosRequestConfig } from 'axios'
 import type { Agent } from 'https'
 import type { URL } from 'url'
@@ -34,9 +33,7 @@ export type SocketConfig = {
     defaultQueryTimeoutMs: number | undefined
     /** ping-pong interval for WS connection */
     keepAliveIntervalMs: number
-	/** should baileys use the mobile api instead of the multi device api
-     * @deprecated This feature has been removed
-    */
+	/** should baileys use the mobile api instead of the multi device api */
 	mobile?: boolean
     /** proxy agent */
     agent?: Agent

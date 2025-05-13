@@ -8,7 +8,10 @@ import {
 	DEF_TAG_PREFIX,
 	INITIAL_PREKEY_COUNT,
 	MIN_PREKEY_COUNT,
-	NOISE_WA_HEADER
+	NOISE_WA_HEADER,
+	MOBILE_NOISE_HEADER,
+	MOBILE_ENDPOINT,
+	MOBILE_PORT
 } from '../Defaults'
 import { DisconnectReason, SocketConfig } from '../Types'
 import {
@@ -21,6 +24,7 @@ import {
 	derivePairingCodeKey,
 	generateLoginNode,
 	generateMdTagPrefix,
+	generateMobileNode,
 	generateRegistrationNode,
 	getCodeFromWSError,
 	getErrorCodeFromStreamError,
@@ -40,7 +44,7 @@ import {
 	jidEncode,
 	S_WHATSAPP_NET
 } from '../WABinary'
-import { WebSocketClient } from './Client'
+import { MobileSocketClient, WebSocketClient } from './Client'
 
 /**
  * Connects to WA servers and performs:
@@ -68,19 +72,18 @@ export const makeSocket = (config: SocketConfig) => {
 		console.warn('⚠️ The printQRInTerminal option has been deprecated. You will no longer receive QR codes in the terminal automatically. Please listen to the connection.update event yourself and handle the QR your way. You can remove this message by removing this opttion. This message will be removed in a future version.')
 	}
 
-	const url = typeof waWebSocketUrl === 'string' ? new URL(waWebSocketUrl) : waWebSocketUrl
+	let url = typeof waWebSocketUrl === 'string' ? new URL(waWebSocketUrl) : waWebSocketUrl
+	config.mobile = config.mobile || url.protocol === 'tcp:'
 
-
-	if(config.mobile || url.protocol === 'tcp:') {
-		throw new Boom('Mobile API is not supported anymore', { statusCode: DisconnectReason.loggedOut })
+	if(config.mobile && url.protocol !== 'tcp:') {
+		url = new URL(`tcp://${MOBILE_ENDPOINT}:${MOBILE_PORT}`)
 	}
 
-	if(url.protocol === 'wss' && authState?.creds?.routingInfo) {
+	if(!config.mobile && url.protocol === 'wss' && authState?.creds?.routingInfo) {
 		url.searchParams.append('ED', authState.creds.routingInfo.toString('base64url'))
 	}
 
-	const ws = new WebSocketClient(url, config)
-
+	const ws = config.socket ? config.socket : config.mobile ? new MobileSocketClient(url, config) : new WebSocketClient(url, config)
 	ws.connect()
 
 	const ev = makeEventBuffer(logger)
@@ -89,7 +92,8 @@ export const makeSocket = (config: SocketConfig) => {
 	/** WA noise protocol wrapper */
 	const noise = makeNoiseHandler({
 		keyPair: ephemeralKeyPair,
-		NOISE_HEADER: NOISE_WA_HEADER,
+		NOISE_HEADER: config.mobile ? MOBILE_NOISE_HEADER : NOISE_WA_HEADER,
+		mobile: config.mobile,
 		logger,
 		routingInfo: authState?.creds?.routingInfo
 	})
@@ -185,7 +189,7 @@ export const makeSocket = (config: SocketConfig) => {
 	 */
 	const waitForMessage = async<T>(msgId: string, timeoutMs = defaultQueryTimeoutMs) => {
 		let onRecv: (json) => void
-		let onErr: (err) => void
+		let onErr: (err: Error) => void
 		try {
 			const result = await promiseTimeout<T>(timeoutMs,
 				(resolve, reject) => {
@@ -247,7 +251,9 @@ export const makeSocket = (config: SocketConfig) => {
 		const keyEnc = await noise.processHandshake(handshake, creds.noiseKey)
 
 		let node: proto.IClientPayload
-		if(!creds.me) {
+		if(config.mobile) {
+			node = generateMobileNode(config)
+		} else if(!creds.me) {
 			node = generateRegistrationNode(creds, config)
 			logger.info({ node }, 'not logged in, attempting registration...')
 		} else {

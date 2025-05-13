@@ -1,5 +1,6 @@
 import NodeCache from '@cacheable/node-cache'
 import { randomBytes } from 'crypto'
+import { v4 as uuidv4 } from 'uuid'
 import { DEFAULT_CACHE_TTLS } from '../Defaults'
 import type { AuthenticationCreds, CacheStore, SignalDataSet, SignalDataTypeMap, SignalKeyStore, SignalKeyStoreWithTransaction, TransactionCapabilityOptions } from '../Types'
 import { Curve, signedKeyPair } from './crypto'
@@ -208,7 +209,13 @@ export const initAuthCreds = (): AuthenticationCreds => {
 		accountSettings: {
 			unarchiveChats: false
 		},
+		// mobile creds
+		deviceId: Buffer.from(uuidv4().replace(/-/g, ''), 'hex').toString('base64url'),
+		phoneId: uuidv4(),
+		identityId: randomBytes(20),
 		registered: false,
+		backupToken: randomBytes(20),
+		registration: {} as never,
 		pairingCode: undefined,
 		lastPropHash: undefined,
 		routingInfo: undefined,

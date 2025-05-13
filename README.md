@@ -9,6 +9,12 @@ Baileys is a WebSockets-based TypeScript library for interacting with the WhatsA
 # Usage
 A new guide has been posted at https://baileys.wiki.
 
+## Connecting native mobile api
+
+Baileys also supports the native mobile API, which allows users to authenticate as a standalone WhatsApp client using their phone number.
+
+Run the [example](Example/example.ts) file with ``--mobile`` cli flag to use the native mobile API.
+
 # Sponsor
 If you'd like to financially support this project, you can do so by supporting the current maintainer [here](https://purpshell.dev/sponsor).
 
