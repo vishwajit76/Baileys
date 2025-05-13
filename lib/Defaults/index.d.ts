@@ -161,5 +161,14 @@ export declare const MOBILE_ENDPOINT = "g.whatsapp.net";
 export declare const MOBILE_PORT = 443;
 export declare const MOBILE_TOKEN: Buffer<ArrayBuffer>;
 export declare const MOBILE_REGISTRATION_ENDPOINT = "https://v.whatsapp.net/v2";
-export declare const MOBILE_USERAGENT = "WhatsApp/2.25.5.50 iOS/18.0 Device/Apple-iPhone_14";
+export declare const FALLBACK_REGISTRATION_ENDPOINT = "https://v-eu.whatsapp.net/v2";
+export declare const MOBILE_USERAGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Mobile/15E148 Safari/604.1";
+export declare const DEVICE_INFO: {
+    os: string;
+    osVersion: string;
+    deviceModel: string;
+    appVersion: string;
+    language: string;
+    buildNumber: string;
+};
 export declare const REGISTRATION_PUBLIC_KEY: Buffer<ArrayBuffer>;
