@@ -8,10 +8,10 @@ import {
 	DEF_TAG_PREFIX,
 	INITIAL_PREKEY_COUNT,
 	MIN_PREKEY_COUNT,
-	NOISE_WA_HEADER,
-	MOBILE_NOISE_HEADER,
 	MOBILE_ENDPOINT,
-	MOBILE_PORT
+	MOBILE_NOISE_HEADER,
+	MOBILE_PORT,
+	NOISE_WA_HEADER
 } from '../Defaults'
 import { DisconnectReason, SocketConfig } from '../Types'
 import {
@@ -83,7 +83,7 @@ export const makeSocket = (config: SocketConfig) => {
 		url.searchParams.append('ED', authState.creds.routingInfo.toString('base64url'))
 	}
 
-	const ws = config.socket ? config.socket : config.mobile ? new MobileSocketClient(url, config) : new WebSocketClient(url, config)
+	const ws = config.mobile ? new MobileSocketClient(url, config) : new WebSocketClient(url, config)
 	ws.connect()
 
 	const ev = makeEventBuffer(logger)

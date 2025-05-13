@@ -1,10 +1,10 @@
+import { createHash } from 'crypto'
 import { proto } from '../../WAProto'
 import { makeLibSignalRepository } from '../Signal/libsignal'
 import type { AuthenticationState, MediaType, SocketConfig, WAVersion } from '../Types'
 import { Browsers } from '../Utils'
 import logger from '../Utils/logger'
 import { version } from './baileys-version.json'
-import { createHash } from 'crypto'
 import phoneNumberMCC from './phonenumber-mcc.json'
 
 export const UNAUTHORIZED_CODES = [401, 403, 419]
@@ -22,6 +22,7 @@ export const KEY_BUNDLE_TYPE = Buffer.from([5])
 export const NOISE_WA_HEADER = Buffer.from(
 	[ 87, 65, 6, DICT_VERSION ]
 ) // last is "DICT_VERSION"
+export const MOBILE_NOISE_HEADER = Buffer.from([87, 65, 2, DICT_VERSION])
 /** from: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url */
 export const URL_REGEX = /https:\/\/(?![^:@\/\s]+:[^:@\/\s]+@)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?/g
 
@@ -126,6 +127,6 @@ export const MOBILE_TOKEN = Buffer.from('0a1mLfGUIBVrMKF1RdvLI5lkRBvof6vn0fD2QRS
 export const MOBILE_REGISTRATION_ENDPOINT = 'https://v.whatsapp.net/v2'
 export const MOBILE_USERAGENT = `WhatsApp/${WA_VERSION} iOS/15.3.1 Device/Apple-iPhone_7`
 export const REGISTRATION_PUBLIC_KEY = Buffer.from([
-       5, 142, 140, 15, 116, 195, 235, 197, 215, 166, 134, 92, 108, 60, 132, 56, 86, 176, 97, 33, 204, 232, 234, 119, 77,
-       34, 251, 111, 18, 37, 18, 48, 45,
+	5, 142, 140, 15, 116, 195, 235, 197, 215, 166, 134, 92, 108, 60, 132, 56, 86, 176, 97, 33, 204, 232, 234, 119, 77,
+	34, 251, 111, 18, 37, 18, 48, 45,
 ])
