@@ -121,11 +121,20 @@ export const PHONENUMBER_MCC = phoneNumberMCC
 export const MOBILE_ENDPOINT = 'g.whatsapp.net'
 export const MOBILE_PORT = 443
 
-const WA_VERSION = '2.25.5.50'
+const WA_VERSION = '2.25.10.50'
 const WA_VERSION_HASH = createHash('md5').update(WA_VERSION).digest('hex')
 export const MOBILE_TOKEN = Buffer.from('0a1mLfGUIBVrMKF1RdvLI5lkRBvof6vn0fD2QRSM' + WA_VERSION_HASH)
 export const MOBILE_REGISTRATION_ENDPOINT = 'https://v.whatsapp.net/v2'
-export const MOBILE_USERAGENT = `WhatsApp/${WA_VERSION} iOS/18.0 Device/Apple-iPhone_14`
+export const FALLBACK_REGISTRATION_ENDPOINT = 'https://v-eu.whatsapp.net/v2'
+export const MOBILE_USERAGENT = `WhatsApp/${WA_VERSION} iOS/18.0 Device/Apple-iPhone_14 (Language/en-US; Build/12345)`
+export const DEVICE_INFO = {
+	os: 'iOS',
+	osVersion: '18.0',
+	deviceModel: 'Apple-iPhone_14',
+	appVersion: WA_VERSION,
+	language: 'en-US',
+	buildNumber: '12345',
+}
 export const REGISTRATION_PUBLIC_KEY = Buffer.from([
 	5, 142, 140, 15, 116, 195, 235, 197, 215, 166, 134, 92, 108, 60, 132, 56, 86, 176, 97, 33, 204, 232, 234, 119, 77,
 	22, 251, 111, 18, 37, 18, 48, 22,
