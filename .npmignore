@@ -1,0 +1,5 @@
+src/
+Example/
+docs/
+*.ts
+*.md
