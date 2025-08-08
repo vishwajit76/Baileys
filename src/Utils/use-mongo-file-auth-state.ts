@@ -1,7 +1,7 @@
 import type { Collection } from 'mongodb'
 import type { Logger } from 'pino'
 import { proto } from '../../WAProto'
-import {
+import type {
 	AuthenticationCreds,
 	AuthenticationState,
 	SignalDataTypeMap,
@@ -64,10 +64,13 @@ export const useMongoDBAuthState = async(
 					logger?.debug({ data }, 'setting data')
 					const tasks: Promise<void>[] = []
 					for(const category in data) {
-						for(const id in data[category]) {
-							const value = data[category][id]
-							const key = `${category}-${id}`
-							tasks.push(value ? writeData(key, value) : removeData(key))
+						const categoryData = data[category as keyof typeof data]
+						if(categoryData) {
+							for(const id in categoryData) {
+								const value = categoryData[id]
+								const key = `${category}-${id}`
+								tasks.push(value ? writeData(key, value as any) : removeData(key))
+							}
 						}
 					}
 
